@@ -1,7 +1,13 @@
+import argparse
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 def main():
+    parser = argparse.ArgumentParser(description="Generate the final Emblem slide (Slide 7).")
+    parser.add_argument("--input_dir", type=str, default="scenario_assets")
+    parser.add_argument("--output_dir", type=str, default="scenario_assets_text")
+    args = parser.parse_args()
+    
     emblem_path = Path("emblem2.png")
     if not emblem_path.exists():
         print(f"Error: {emblem_path} not found.")
@@ -72,7 +78,8 @@ def main():
     # Draw main text in Gold
     draw.text((x1, current_y), cta_text_1, font=font_large, fill=(255, 215, 0))
     
-    input_dir = Path("scenario_assets")
+    input_dir = Path(args.input_dir)
+    output_dir = Path(args.output_dir)
     
     if not input_dir.exists():
         print("Error: scenario_assets directory not found.")
@@ -84,7 +91,11 @@ def main():
     print(f"Found {len(scenario_folders)} scenario folders.")
     
     for folder in scenario_folders:
-        out_path = folder / "7_Emblem.jpg"
+        out_folder = output_dir / folder.name
+        if not out_folder.exists():
+            out_folder.mkdir(parents=True, exist_ok=True)
+            
+        out_path = out_folder / "7_Emblem_Text.jpg"
         final_img.save(out_path, "JPEG", quality=95)
         print(f"  [Success] Saved {out_path}")
         
