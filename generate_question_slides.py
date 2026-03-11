@@ -85,6 +85,7 @@ def main():
     parser = argparse.ArgumentParser(description="Generate Question Slides using empty.jpg")
     parser.add_argument("--scenarios", type=str, default="tiktok_scenarios.json")
     parser.add_argument("--input_dir", type=str, default="scenario_assets")
+    parser.add_argument("--output_dir", type=str, default="scenario_assets_text")
     parser.add_argument("--base_img", type=str, default="empty.jpg")
     parser.add_argument("--font", type=str, default=r"C:\GitHub\AppExperiment1\assets\fonts\Philosopher-Bold.ttf")
     parser.add_argument("--force", action="store_true")
@@ -93,6 +94,7 @@ def main():
     
     scenarios_path = Path(args.scenarios)
     input_dir = Path(args.input_dir)
+    output_dir = Path(args.output_dir)
     base_img_path = Path(args.base_img)
     
     if not scenarios_path.exists():
@@ -135,7 +137,12 @@ def main():
         if not scenario_dir.exists():
             continue
             
-        out_img = scenario_dir / "2_Question_Text.jpg"
+        # Create corresponding output directory
+        out_scenario_dir = output_dir / f"scenario_{s_id:02d}"
+        if not out_scenario_dir.exists():
+            out_scenario_dir.mkdir(parents=True, exist_ok=True)
+            
+        out_img = out_scenario_dir / "2_Question_Text.jpg"
         
         if out_img.exists() and not args.force:
             print(f"    [Skip] Scenario {s_id} Question image already exists.")

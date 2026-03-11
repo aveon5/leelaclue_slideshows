@@ -85,7 +85,7 @@ def upload_file(service, file_path, parent_id):
 
 def main():
     parser = argparse.ArgumentParser(description="Upload generated _Text.jpg slides to Google Drive.")
-    parser.add_argument("--input_dir", type=str, default="scenario_assets", help="Local directory containing the scenario folders.")
+    parser.add_argument("--input_dir", type=str, default="scenario_assets_text", help="Local directory containing the scenario folders.")
     parser.add_argument("--drive_root_folder_id", type=str, required=True, help="The ID of the Root Google Drive folder where scenarios should be uploaded.")
     args = parser.parse_args()
     

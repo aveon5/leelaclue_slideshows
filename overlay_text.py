@@ -214,6 +214,7 @@ def main():
     parser = argparse.ArgumentParser(description="Add text overlays to TikTok scenario images.")
     parser.add_argument("--scenarios", type=str, default="tiktok_scenarios.json")
     parser.add_argument("--input_dir", type=str, default="scenario_assets")
+    parser.add_argument("--output_dir", type=str, default="scenario_assets_text")
     parser.add_argument("--font", type=str, default="arial.ttf", help="Path to a TrueType font file.")
     parser.add_argument("--force", action="store_true", help="Overwrite existing _Text.jpg images.")
     parser.add_argument("--scenario_ids", type=int, nargs="+", help="Specific scenario IDs to process (e.g. 1 2 3).")
@@ -222,6 +223,7 @@ def main():
     
     scenarios_path = Path(args.scenarios)
     input_dir = Path(args.input_dir)
+    output_dir = Path(args.output_dir)
     
     if not scenarios_path.exists():
         print(f"Error: Scenarios file not found at {scenarios_path}")
@@ -244,6 +246,11 @@ def main():
             print(f"Skipping Scenario {s_id}: Directory not found.")
             continue
             
+        # Create corresponding output directory
+        out_scenario_dir = output_dir / f"scenario_{s_id:02d}"
+        if not out_scenario_dir.exists():
+            out_scenario_dir.mkdir(parents=True, exist_ok=True)
+            
         print(f"\n--> Processing Scenario {s_id}")
         
         # --- Slide 1: Hook ---
@@ -260,7 +267,7 @@ def main():
             hook_text = hook_text_raw
             
         in_img = scenario_dir / "1_Hook.jpg"
-        out_img = scenario_dir / "1_Hook_Text.jpg" # Create copy
+        out_img = out_scenario_dir / "1_Hook_Text.jpg" # Create copy
         if in_img.exists() and (args.force or not out_img.exists()):
             process_image(in_img, out_img, hook_text, font_path=args.font, font_size=70, text_y=200, vertical_align="top", bg_start_from_top=True, line_spacing=40)
         elif out_img.exists():
@@ -283,7 +290,7 @@ def main():
             
             if card_files:
                 in_card = card_files[0]
-                out_card = scenario_dir / f"{in_card.stem}_Text.jpg"
+                out_card = out_scenario_dir / f"{in_card.stem}_Text.jpg"
                 
                 # Format card text (e.g. "Standort (Mada)" at top, rest in white in middle)
                 if ":" in text:
@@ -310,7 +317,7 @@ def main():
         # --- Slide 6: Shift ---
         shift_text = scenario.get("slide_6_shift", "")
         in_img6 = scenario_dir / "6_Shift.jpg"
-        out_img6 = scenario_dir / "6_Shift_Text.jpg"
+        out_img6 = out_scenario_dir / "6_Shift_Text.jpg"
         if in_img6.exists() and (args.force or not out_img6.exists()):
              process_image(in_img6, out_img6, shift_text, font_path=args.font, font_size=70, text_y=960, vertical_align="center")
         elif out_img6.exists():
