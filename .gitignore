@@ -1,0 +1,7 @@
+scenario_assets/
+*.jpg
+*.png
+tiktok_scenarios.json
+tiktok_nano_banana_prompts.json
+__pycache__/
+*.pyc
