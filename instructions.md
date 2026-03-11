@@ -61,6 +61,21 @@ After the Agent provides the JSON data, execute these steps:
 3. **Finish Slide (Slide 7):** `python generate_emblem_slide.py`
    - Renders the final branding and "Probiere die App..." CTA.
 
+### Phase 3: Cloud Upload (Optional)
+To automatically push the rendered `_Text.jpg` assets to a remote Google Drive folder, run:
+`python upload_to_drive.py --drive_root_folder_id <YOUR_FOLDER_ID>`
+
+**Prerequisites for Uploading:**
+You will need a `credentials.json` file in the project root. To get this:
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a new Project (or select an existing one).
+3. Go to **APIs & Services > Library** and search for **Google Drive API**. Click **Enable**.
+4. Go to **APIs & Services > OAuth consent screen**. Select "External" and fill in the required fields (App name, support email, developer email). Under scopes, you don't *strictly* need to add anything here right now, but you can add the `.../auth/drive.file` scope. Save and continue. Add your own Google Account email under "Test users".
+5. Go to **APIs & Services > Credentials**. Click **Create Credentials > OAuth client ID**.
+6. Select **Desktop App** as the Application type and give it a name to create it.
+7. Click the Download icon next to the newly created credential.
+8. Rename the downloaded file to exactly `credentials.json` and place it in the same directory as the script.
+
 ---
 
 ## 3. 🎨 Visual Safety Zone Guide
