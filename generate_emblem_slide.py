@@ -6,6 +6,7 @@ def main():
     parser = argparse.ArgumentParser(description="Generate the final Emblem slide (Slide 7).")
     parser.add_argument("--input_dir", type=str, default="scenario_assets")
     parser.add_argument("--output_dir", type=str, default="scenario_assets_text")
+    parser.add_argument("--scenario_ids", type=int, nargs="+", help="Specific scenario IDs to process (e.g. 1 2 3).")
     args = parser.parse_args()
     
     emblem_path = Path("emblem2.png")
@@ -91,6 +92,15 @@ def main():
     print(f"Found {len(scenario_folders)} scenario folders.")
     
     for folder in scenario_folders:
+        try:
+            # Extract ID from "scenario_XX"
+            folder_id = int(folder.name.split("_")[1])
+        except (IndexError, ValueError):
+            continue
+
+        if args.scenario_ids and folder_id not in args.scenario_ids:
+            continue
+
         out_folder = output_dir / folder.name
         if not out_folder.exists():
             out_folder.mkdir(parents=True, exist_ok=True)

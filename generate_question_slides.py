@@ -89,6 +89,7 @@ def main():
     parser.add_argument("--base_img", type=str, default="empty.jpg")
     parser.add_argument("--font", type=str, default=r"C:\GitHub\AppExperiment1\assets\fonts\Philosopher-Bold.ttf")
     parser.add_argument("--force", action="store_true")
+    parser.add_argument("--scenario_ids", type=int, nargs="+", help="Specific scenario IDs to process (e.g. 1 2 3).")
     
     args = parser.parse_args()
     
@@ -133,6 +134,9 @@ def main():
         s_id = scenario.get("id")
         if not s_id: continue
         
+        if args.scenario_ids and s_id not in args.scenario_ids:
+            continue
+            
         scenario_dir = input_dir / f"scenario_{s_id:02d}"
         if not scenario_dir.exists():
             continue
