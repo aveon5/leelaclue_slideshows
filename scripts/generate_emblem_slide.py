@@ -2,14 +2,17 @@ import argparse
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
+# Get the project root directory (parent of the scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 def main():
     parser = argparse.ArgumentParser(description="Generate the final Emblem slide (Slide 7).")
-    parser.add_argument("--input_dir", type=str, default="scenario_assets")
-    parser.add_argument("--output_dir", type=str, default="scenario_assets_text")
+    parser.add_argument("--input_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets"))
+    parser.add_argument("--output_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets_text"))
     parser.add_argument("--scenario_ids", type=int, nargs="+", help="Specific scenario IDs to process (e.g. 1 2 3).")
     args = parser.parse_args()
     
-    emblem_path = Path("emblem2.png")
+    emblem_path = PROJECT_ROOT / "emblem2.png"
     if not emblem_path.exists():
         print(f"Error: {emblem_path} not found.")
         return

@@ -4,6 +4,9 @@ import argparse
 from pathlib import Path
 from PIL import Image, ImageFilter
 
+# Get the project root directory (parent of the scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 def create_padded_image(img_path, target_size=(1080, 1920)):
     """
     Resizes image to fit target size while maintaining aspect ratio.
@@ -43,10 +46,10 @@ def create_padded_image(img_path, target_size=(1080, 1920)):
 
 def main():
     parser = argparse.ArgumentParser(description="Generate scenario folders and process images for TikTok.")
-    parser.add_argument("--scenarios", type=str, default="tiktok_scenarios.json", help="Path to the JSON file with the TikTok scenarios.")
+    parser.add_argument("--scenarios", type=str, default=str(PROJECT_ROOT / "tiktok_scenarios.json"), help="Path to the JSON file with the TikTok scenarios.")
     parser.add_argument("--cards", type=str, default=r"C:\GitHub\AppExperiment1\assets\cards_de.json", help="Path to the cards JSON file.")
     parser.add_argument("--assets_dir", type=str, default=r"C:\GitHub\AppExperiment1", help="Base directory containing the 'assets' folder.")
-    parser.add_argument("--output_dir", type=str, default="scenario_assets", help="Directory where the scenario folders will be created.")
+    parser.add_argument("--output_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets"), help="Directory where the scenario folders will be created.")
     
     args = parser.parse_args()
     

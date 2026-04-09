@@ -6,3 +6,5 @@ tiktok_nano_banana_prompts.json
 __pycache__/
 *.pyc
 .env
+
+archive/

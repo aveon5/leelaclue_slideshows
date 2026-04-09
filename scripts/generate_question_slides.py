@@ -4,6 +4,9 @@ import textwrap
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
+# Get the project root directory (parent of the scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 def fit_text_in_box(draw, text, box, font_path, color=(240, 230, 255), max_font_size=80):
     """
     Finds the maximum font size that fits the text inside the given box 
@@ -83,10 +86,10 @@ def fit_text_in_box(draw, text, box, font_path, color=(240, 230, 255), max_font_
 
 def main():
     parser = argparse.ArgumentParser(description="Generate Question Slides using empty.jpg")
-    parser.add_argument("--scenarios", type=str, default="tiktok_scenarios.json")
-    parser.add_argument("--input_dir", type=str, default="scenario_assets")
-    parser.add_argument("--output_dir", type=str, default="scenario_assets_text")
-    parser.add_argument("--base_img", type=str, default="empty.jpg")
+    parser.add_argument("--scenarios", type=str, default=str(PROJECT_ROOT / "tiktok_scenarios.json"))
+    parser.add_argument("--input_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets"))
+    parser.add_argument("--output_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets_text"))
+    parser.add_argument("--base_img", type=str, default=str(PROJECT_ROOT / "empty.jpg"))
     parser.add_argument("--font", type=str, default=r"C:\GitHub\AppExperiment1\assets\fonts\Philosopher-Bold.ttf")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--scenario_ids", type=int, nargs="+", help="Specific scenario IDs to process (e.g. 1 2 3).")

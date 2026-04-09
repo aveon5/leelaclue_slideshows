@@ -10,26 +10,34 @@ from googleapiclient.http import MediaFileUpload
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
+# Get the project root directory (parent of the scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 def authenticate_google_drive():
     """Shows basic usage of the Drive v3 API.
     Prints the names and ids of the first 10 files the user has access to.
     """
     creds = None
+    token_path = PROJECT_ROOT / 'token.json'
+    creds_path = PROJECT_ROOT / 'credentials.json'
+
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if token_path.exists():
+        creds = Credentials.from_authorized_user_file(str(token_path), SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
+            if not creds_path.exists():
+                return None
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                str(creds_path), SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open(token_path, 'w') as token:
             token.write(creds.to_json())
 
     return build('drive', 'v3', credentials=creds)
@@ -85,7 +93,7 @@ def upload_file(service, file_path, parent_id):
 
 def main():
     parser = argparse.ArgumentParser(description="Upload generated _Text.jpg slides to Google Drive.")
-    parser.add_argument("--input_dir", type=str, default="scenario_assets_text", help="Local directory containing the scenario folders.")
+    parser.add_argument("--input_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets_text"), help="Local directory containing the scenario folders.")
     parser.add_argument("--drive_root_folder_id", type=str, required=True, help="The ID of the Root Google Drive folder where scenarios should be uploaded.")
     args = parser.parse_args()
     
@@ -94,13 +102,11 @@ def main():
         print(f"Error: Local directory '{input_dir}' not found.")
         return
         
-    # Check for credentials before attempting auth
-    if not os.path.exists('credentials.json') and not os.path.exists('token.json'):
-         print("Error: 'credentials.json' not found. Please download your OAuth 2.0 Client credentials from the Google Cloud Console and place them in this folder.")
-         return
-         
     print("Authenticating with Google Drive...")
     service = authenticate_google_drive()
+    if not service:
+         print(f"Error: 'credentials.json' not found. Please download your OAuth 2.0 Client credentials from the Google Cloud Console and place them in {PROJECT_ROOT}.")
+         return
     print("Authentication successful.")
     
     # Iterate through scenario folders

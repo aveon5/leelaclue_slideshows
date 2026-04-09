@@ -5,6 +5,9 @@ import textwrap
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
+# Get the project root directory (parent of the scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 def ensure_1080x1920(img, bg_color=(0, 0, 0)):
     """Ensures the image is exactly 1080x1920 by scaling and padding if necessary."""
     target_width, target_height = 1080, 1920
@@ -212,9 +215,9 @@ def process_image(input_path, output_path, text, font_path="arial.ttf", font_siz
 
 def main():
     parser = argparse.ArgumentParser(description="Add text overlays to TikTok scenario images.")
-    parser.add_argument("--scenarios", type=str, default="tiktok_scenarios.json")
-    parser.add_argument("--input_dir", type=str, default="scenario_assets")
-    parser.add_argument("--output_dir", type=str, default="scenario_assets_text")
+    parser.add_argument("--scenarios", type=str, default=str(PROJECT_ROOT / "tiktok_scenarios.json"))
+    parser.add_argument("--input_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets"))
+    parser.add_argument("--output_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets_text"))
     parser.add_argument("--font", type=str, default="arial.ttf", help="Path to a TrueType font file.")
     parser.add_argument("--force", action="store_true", help="Overwrite existing _Text.jpg images.")
     parser.add_argument("--scenario_ids", type=int, nargs="+", help="Specific scenario IDs to process (e.g. 1 2 3).")

@@ -1,4 +1,8 @@
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
+
+# Get the project root directory (parent of the scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 def trace_wrap(text_fragments):
     img = Image.new("RGB", (1080, 1920), (0,0,0))
@@ -71,7 +75,7 @@ def trace_wrap(text_fragments):
             
         current_y += line_height + 10
         
-    img.save("test_wrap_output.jpg")
+    img.save(PROJECT_ROOT / "test_wrap_output.jpg")
 
 text = "Ressource (Tapa): Befreie dich von Erwartungen, die nicht dir gehören. Schaffe Raum für deinen wahren Weg."
 prefix, description = text.split(":", 1)

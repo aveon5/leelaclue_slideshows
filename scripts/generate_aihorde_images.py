@@ -6,6 +6,9 @@ import argparse
 from pathlib import Path
 from PIL import Image, ImageFilter
 
+# Get the project root directory (parent of the scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 # AI Horde API Endpoints
 API_ASYNC = "https://aihorde.net/api/v2/generate/async"
 API_CHECK = "https://aihorde.net/api/v2/generate/check/{}"
@@ -117,8 +120,8 @@ def download_image(job_id, output_path):
 
 def main():
     parser = argparse.ArgumentParser(description="Generate images using AI Horde.")
-    parser.add_argument("--prompts", type=str, default="tiktok_nano_banana_prompts.json")
-    parser.add_argument("--output_dir", type=str, default="scenario_assets")
+    parser.add_argument("--prompts", type=str, default=str(PROJECT_ROOT / "tiktok_nano_banana_prompts.json"))
+    parser.add_argument("--output_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets"))
     
     args = parser.parse_args()
     

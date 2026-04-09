@@ -1,15 +1,20 @@
+import os
 import argparse
 import subprocess
 import sys
+from pathlib import Path
+
+# Get the directory where THIS script is located
+SCRIPT_DIR = Path(__file__).resolve().parent
 
 def run_script(script_name, args_list):
     """Runs a python script with the given arguments."""
-    cmd = [sys.executable, script_name] + args_list
+    script_path = SCRIPT_DIR / script_name
+    cmd = [sys.executable, str(script_path)] + args_list
     print(f"\n>>> Running: {' '.join(cmd)}")
     result = subprocess.run(cmd)
     if result.returncode != 0:
         print(f"Error: {script_name} failed with return code {result.returncode}")
-        # sys.exit(result.returncode) # Optional: stop on error
     return result.returncode
 
 def main():
@@ -34,7 +39,7 @@ def main():
     run_script("generate_question_slides.py", scenario_args + force_arg)
 
     # 3. Finish Slide (Slide 7)
-    run_script("generate_emblem_slide.py", scenario_args) # emblem slide doesn't use --force in its current form, it just saves
+    run_script("generate_emblem_slide.py", scenario_args)
 
     print("\nPhase 2 Complete!")
 

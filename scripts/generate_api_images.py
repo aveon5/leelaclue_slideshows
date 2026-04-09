@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+# Get the project root directory (parent of the scripts directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 def generate_and_save_image(client, prompt, output_path):
     """Generates an image using Nano Banana (Imagen 3) and saves it."""
     try:
@@ -36,18 +39,18 @@ def generate_and_save_image(client, prompt, output_path):
 
 def main():
     parser = argparse.ArgumentParser(description="Generate Slide 1 and Slide 6 images using Google's Nano Banana (Imagen) API.")
-    parser.add_argument("--prompts", type=str, default="tiktok_nano_banana_prompts.json", help="Path to the JSON file with the generated prompts.")
-    parser.add_argument("--output_dir", type=str, default="scenario_assets", help="Directory where the scenario folders are located.")
+    parser.add_argument("--prompts", type=str, default=str(PROJECT_ROOT / "tiktok_nano_banana_prompts.json"), help="Path to the JSON file with the generated prompts.")
+    parser.add_argument("--output_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets"), help="Directory where the scenario folders are located.")
     
     args = parser.parse_args()
     
-    # Load environment variables from .env file
-    load_dotenv()
+    # Load environment variables from .env file in project root
+    load_dotenv(PROJECT_ROOT / ".env")
     
     # Check for API key in environment
     if not os.environ.get("GEMINI_API_KEY"):
         print("Error: GEMINI_API_KEY not found.")
-        print("Please create a .env file in this directory and add: GEMINI_API_KEY=your_api_key_here")
+        print(f"Please create a .env file in {PROJECT_ROOT} and add: GEMINI_API_KEY=your_api_key_here")
         return
         
     prompts_path = Path(args.prompts)
