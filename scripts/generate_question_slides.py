@@ -89,7 +89,7 @@ def main():
     parser.add_argument("--scenarios", type=str, default=str(PROJECT_ROOT / "tiktok_scenarios.json"))
     parser.add_argument("--input_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets"))
     parser.add_argument("--output_dir", type=str, default=str(PROJECT_ROOT / "scenario_assets_text"))
-    parser.add_argument("--base_img", type=str, default=str(PROJECT_ROOT / "empty.jpg"))
+    parser.add_argument("--base_img", type=str, default=str(PROJECT_ROOT / "assets" / "empty.jpg"))
     parser.add_argument("--font", type=str, default=r"C:\GitHub\AppExperiment1\assets\fonts\Philosopher-Bold.ttf")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--scenario_ids", type=int, nargs="+", help="Specific scenario IDs to process (e.g. 1 2 3).")

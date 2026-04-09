@@ -12,7 +12,7 @@ def main():
     parser.add_argument("--scenario_ids", type=int, nargs="+", help="Specific scenario IDs to process (e.g. 1 2 3).")
     args = parser.parse_args()
     
-    emblem_path = PROJECT_ROOT / "emblem2.png"
+    emblem_path = PROJECT_ROOT / "assets" / "emblem2.png"
     if not emblem_path.exists():
         print(f"Error: {emblem_path} not found.")
         return
